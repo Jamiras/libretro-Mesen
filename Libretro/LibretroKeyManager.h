@@ -122,7 +122,11 @@ public:
 				if(ProcessAction(RETRO_DEVICE_ID_JOYPAD_R)) {
 					if (!(_currentDisk & 0x100)) { // ignore until previous disk switch completes
 						MessageManager::DisplayMessage("FDS", "Ejected disk");
-						_currentDisk |= 0x100;
+						FDS* fds = dynamic_cast<FDS*>(_console->GetMapper());
+						if(fds)
+							_currentDisk = fds->GetCurrentDisk() | 0x100;
+						else
+							_currentDisk |= 0x100;
 						fdsSam->SwitchDiskSide();
 					}
 				}
